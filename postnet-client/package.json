@@ -1,0 +1,43 @@
+{
+  "name": "postnet-client",
+  "version": "1.0.0",
+  "author": "Jaroslav Hrubý",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "dev": "yarn workspace @hrubyj/postnet next dev",
+    "build": "yarn workspace @hrubyj/postnet next build",
+    "start": "yarn workspace @hrubyj/postnet next start",
+    "lint": "yarn workspace @hrubyj/postnet next lint",
+    "generate-api": "openapi-generator-cli generate -i ../postnet-server/api.yml -g typescript-axios -o packages/postnet-api/src -p withSeparateModelsAndApi=true,apiPackage=api,modelPackage=model,withInterfaces=true,enumPropertyNaming=UPPERCASE --global-property skipFormModel=false",
+    "postinstall": "yarn generate-api",
+    "deduplicate": "yarn-deduplicate yarn.lock"
+  },
+  "prettier": {
+    "printWidth": 160,
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "avoid",
+    "proseWrap": "never",
+    "endOfLine": "auto"
+  },
+  "dependencies": {
+    "typescript": "4.5.4"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "2.4.23",
+    "prettier": "2.5.1",
+    "yarn-deduplicate": "^3.1.0"
+  }
+}

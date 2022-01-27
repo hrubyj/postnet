@@ -1,0 +1,422 @@
+openapi: 3.0.3
+
+info:
+  title: POSTNET API
+  description: API k semestrální práce z PIA
+  version: 1.0.0
+
+tags:
+  - name: UserController
+    description: controller pro operace nad uživateli
+  - name: FriendshipController
+    description: controller pro operace s přáteli
+  - name: PostController
+    description: controller pro operace s příspěvky
+  - name: AdminController
+    description: controller pro administraci
+
+security:
+  - JsonWebToken: []
+
+paths:
+# -> UserController
+  '/users/register':
+    post:
+      description: Endpoint pro registraci nového uživatele
+      security: []
+      tags:
+        - UserController
+      operationId: registerUser
+      requestBody:
+          $ref: '#/components/requestBodies/RegistrationBody'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Zadaný email je již využíván.
+  '/users/login':
+    post:
+      description: Endpoint pro přihlášení uživatele
+      security: []
+      tags:
+        - UserController
+      operationId: loginUser
+      requestBody:
+          $ref: '#/components/requestBodies/LoginBody'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationVO'
+  '/users/getAll':
+    get:
+      description: Endpoint pro získání všech uživatelů
+      tags:
+        - UserController
+      operationId: getAllUsers
+      parameters:
+        - name: fulltext
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVO'
+        401:
+          description: Unauthorized
+  '/users/getFriends':
+    get:
+      description: Endpoint pro získání dosud nespřátelených uživatelů
+      tags:
+        - UserController
+      operationId: getFriends
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVO'
+        401:
+          description: Unauthorized
+  '/users/getBlocked':
+    get:
+      description: Endpoint pro získání blokovaných uživatelů
+      tags:
+        - UserController
+      operationId: getBlocked
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVO'
+        401:
+          description: Unauthorized
+  '/users/getStrangers':
+    get:
+      description: Endpoint pro získání dosud nespřátelených uživatelů
+      tags:
+        - UserController
+      operationId: getStrangers
+      parameters:
+        - name: fulltext
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVO'
+        401:
+          description: Unauthorized
+# <- UserController
+# -> PostController
+  '/posts/create':
+    post:
+      description: Endpoint pro vytváření příspěvků
+      tags:
+        - PostController
+      operationId: createPost
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePostBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/posts/get':
+    get:
+      description: Endpoint pro získání příspěvků
+      tags:
+          - PostController
+      operationId: getPosts
+      parameters:
+        - name: since
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostVO'
+  '/posts/getOldPosts':
+    get:
+      description: Endpoint pro získání starších příspěvků
+      tags:
+        - PostController
+      operationId: getOldPosts
+      parameters:
+        - name: until
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostVO'
+# <- PostController
+# -> FriendshipController
+  '/friendship/create':
+    post:
+      description: Endpoint pro vytváření nových přátelství
+      tags:
+        - FriendshipController
+      operationId: createFriendship
+      parameters:
+        - name: friendId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/friendship/block':
+    post:
+      description: Endpoint pro vytváření blokací
+      tags:
+        - FriendshipController
+      operationId: createBlock
+      parameters:
+        - name: friendId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/friendship/confirm':
+    post:
+      description: Endpoint pro potvrzení přátelství
+      tags:
+        - FriendshipController
+      operationId: confirmFriendship
+      parameters:
+        - name: friendId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/friendship/delete':
+    delete:
+      description: Endpoint pro zrušení přátelství/blokace
+      tags:
+        - FriendshipController
+      operationId: deleteFriendship
+      parameters:
+        - name: friendId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/friendship/getRequests':
+    get:
+      description: Endpoint pro získání žádostí o přátelství
+      tags:
+        - FriendshipController
+      operationId: getRequests
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserVO'
+        401:
+          description: Unauthorized
+# <- FriendshipController
+# -> AdminController
+  '/admin/announcement':
+    post:
+      description: Endpoint pro vytváření oznámení
+      tags:
+        - AdminController
+      operationId: createAnnouncement
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePostBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+  '/admin/setAdminRole':
+    post:
+      description: Endpoint pro vytváření oznámení
+      tags:
+        - AdminController
+      operationId: setAdminRole
+      requestBody:
+        $ref: '#/components/requestBodies/SetAdminRoleBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+
+
+components:
+
+  securitySchemes:
+    JsonWebToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  requestBodies:
+    RegistrationBody:
+      required: true
+      description: Tělo pro registrační údaje
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistrationVO'
+    LoginBody:
+      required: true
+      description: Tělo pro přihlašovací údaje
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CredentialsVO'
+    CreatePostBody:
+      required: true
+      description: Tělo pro vytvoření nového příspěvku
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PostVO'
+    SetAdminRoleBody:
+      required: true
+      description: Tělo pro nastavení role uživatele
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminRoleVO'
+  # -> VO Objekty
+  schemas:
+    RegistrationVO:
+      description: Přepravka pro registrační údaje
+      required:
+        - email
+        - name
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+    UserVO:
+      description: Přepravka pro údaje o uživateli
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        admin:
+          type: boolean
+    CredentialsVO:
+      description: Přepravka pro přihlašovací údaje
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+    AuthenticationVO:
+      description: Přepravka pro autentikační údaje
+      type: object
+      properties:
+        login:
+          type: string
+          format: email
+        name:
+          type: string
+        admin:
+          type: boolean
+        token:
+          type: string
+      required:
+        - login
+        - name
+        - token
+    PostVO:
+      description: Přepravka pro příspěvek
+      type: object
+      properties:
+        author:
+          type: string
+        creationDateTime:
+          type: string
+          format: date-time
+        content:
+          type: string
+    AdminRoleVO:
+      description: Přepravka pro nastavení admin role
+      type: object
+      properties:
+        userId:
+          type: integer
+        admin:
+          type: boolean

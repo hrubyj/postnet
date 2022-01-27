@@ -1,0 +1,162 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1643045705157-1"
+               author="hrubyj">
+        <createTable tableName="friendship">
+            <column name="id_friendship" autoIncrement="true"
+                    type="INT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_friendship"/>
+            </column>
+            <column name="type"
+                    type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user1"
+                    type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user2"
+                    type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1643045705157-2"
+               author="hrubyj">
+        <createTable tableName="post">
+            <column name="id_post" autoIncrement="true"
+                    type="INT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_post"/>
+            </column>
+            <column name="announcement"
+                    type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content"
+                    type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_datetime"
+                    type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id_user"
+                    type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1643045705157-3"
+               author="hrubyj">
+        <createTable tableName="role">
+            <column name="id_role" autoIncrement="true"
+                    type="INT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_role"/>
+            </column>
+            <column name="role"
+                    type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1643045705157-4"
+               author="hrubyj">
+        <createTable tableName="user">
+            <column name="id_user" autoIncrement="true"
+                    type="INT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_user"/>
+            </column>
+            <column name="email"
+                    type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name"
+                    type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password"
+                    type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1643045705157-5"
+               author="hrubyj">
+        <createTable tableName="user_role">
+            <column name="id_user_role" autoIncrement="true"
+                    type="INT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_user_role"/>
+            </column>
+            <column name="role_id_role"
+                    type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id_user"
+                    type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1643045705157-6"
+               author="hrubyj">
+        <addUniqueConstraint columnNames="email"
+                             constraintName="uc_user_email"
+                             tableName="user"/>
+    </changeSet>
+    <changeSet id="1643045705157-7"
+               author="hrubyj">
+        <addForeignKeyConstraint baseColumnNames="id_user1"
+                                 baseTableName="friendship"
+                                 constraintName="FK_FRIENDSHIP_ON_ID_USER1"
+                                 referencedColumnNames="id_user"
+                                 referencedTableName="user"/>
+    </changeSet>
+    <changeSet id="1643045705157-8"
+               author="hrubyj">
+        <addForeignKeyConstraint baseColumnNames="id_user2"
+                                 baseTableName="friendship"
+                                 constraintName="FK_FRIENDSHIP_ON_ID_USER2"
+                                 referencedColumnNames="id_user"
+                                 referencedTableName="user"/>
+    </changeSet>
+    <changeSet id="1643045705157-9"
+               author="hrubyj">
+        <addForeignKeyConstraint baseColumnNames="user_id_user"
+                                 baseTableName="post"
+                                 constraintName="FK_POST_ON_USER_IDUSER"
+                                 referencedColumnNames="id_user"
+                                 referencedTableName="user"/>
+    </changeSet>
+    <changeSet id="1643045705157-10"
+               author="hrubyj">
+        <addForeignKeyConstraint baseColumnNames="role_id_role"
+                                 baseTableName="user_role"
+                                 constraintName="FK_USER_ROLE_ON_ROLE_IDROLE"
+                                 referencedColumnNames="id_role"
+                                 referencedTableName="role"/>
+    </changeSet>
+    <changeSet id="1643045705157-11"
+               author="hrubyj">
+        <addForeignKeyConstraint baseColumnNames="user_id_user"
+                                 baseTableName="user_role"
+                                 constraintName="FK_USER_ROLE_ON_USER_IDUSER"
+                                 referencedColumnNames="id_user"
+                                 referencedTableName="user"/>
+    </changeSet>
+
+</databaseChangeLog>

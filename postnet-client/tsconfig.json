@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@hrubyj/pia": ["packages/pia"],
+      "@hrubyj/pia-api": ["packages/pia-api/src"]
+    },
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "references": [{"@hrubyj/pia": ["packages/pia"]}, {"@hrubyj/pia-api": ["packages/pia-api/src"]}],
+  "include": [
+    "packages/pia/next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

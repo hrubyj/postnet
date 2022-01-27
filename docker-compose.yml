@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql
+    container_name: postnet-db
+    volumes:
+      - postnet-data:/var/lib/mysql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      - MYSQL_ROOT_PASSWORD:password
+      - PGDATA=/var/lib/mysql/data/posnet-data
+      - MYSQL_DATABASE=postnet-db
+    shm_size: 256MB
+
+  server:
+    container_name: postnet-server
+    build: ./postnet-server
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:5432/postnet-db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+      - JWT_SECRET=PostNet
+    depends_on:
+      - db
+
+  client:
+    container_name: postnet-client
+    build:
+      dockerfile: ./postnet-client/Dockerfile
+      context: .
+    ports:
+      - "3000:3000"
+
+volumes:
+  postnet-data:
