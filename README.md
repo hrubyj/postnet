@@ -51,6 +51,8 @@ Rozhraní klient-server je nadefinováno v souboru `api.yml`. V tomto souboru js
 
 Autentizace je implementována s pomocí JsonWebToken. Pokud jsou při přihlašování údaje korektní, server vygeneruje autentizační token, který se následně bude posílat s každým dalším požadavkem pro ověřování identity uživatele. 
 
+Při startu serveru se kontroluje existence administrátora. Pokud žádný administrátor neexistuje, je vytvořen nový - `admin@example.org` : `adminpassword`.
+
 ### Klient
 Klientská část je členěna do adresářů:
 * `components`
