@@ -25,7 +25,7 @@ const LoginForm = () => {
     };
 
     const onFinishFailed = (errorInfo) => {
-        message.error('Při přihlašování došlo k neznámé chybě');
+        message.error('Zadané údaje nejsou validní');
     };
 
     return (

@@ -33,7 +33,7 @@ paths:
         200:
           description: OK
         400:
-          description: Zadaný email je již využíván.
+          description: Zadané údaje nejsou validní nebo je email již využíván.
   '/users/login':
     post:
       description: Endpoint pro přihlášení uživatele
@@ -50,6 +50,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationVO'
+        400:
+          description: Zadané údaje nejsou správně.
   '/users/getAll':
     get:
       description: Endpoint pro získání všech uživatelů
@@ -72,7 +74,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserVO'
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/users/getFriends':
     get:
       description: Endpoint pro získání dosud nespřátelených uživatelů
@@ -89,7 +91,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserVO'
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/users/getBlocked':
     get:
       description: Endpoint pro získání blokovaných uživatelů
@@ -106,7 +108,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserVO'
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/users/getStrangers':
     get:
       description: Endpoint pro získání dosud nespřátelených uživatelů
@@ -129,7 +131,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserVO'
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
 # <- UserController
 # -> PostController
   '/posts/create':
@@ -143,8 +145,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Příspěvěk není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/posts/get':
     get:
       description: Endpoint pro získání příspěvků
@@ -167,6 +171,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PostVO'
+        401:
+          description: Neoprávněný přístup
   '/posts/getOldPosts':
     get:
       description: Endpoint pro získání starších příspěvků
@@ -189,6 +195,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PostVO'
+        400:
+          description: Zadané datum není validní.
+        401:
+          description: Neoprávněný přístup
 # <- PostController
 # -> FriendshipController
   '/friendship/create':
@@ -206,8 +216,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Id přítele není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/friendship/block':
     post:
       description: Endpoint pro vytváření blokací
@@ -223,8 +235,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Id blokovaného není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/friendship/confirm':
     post:
       description: Endpoint pro potvrzení přátelství
@@ -240,8 +254,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Id přítele není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/friendship/delete':
     delete:
       description: Endpoint pro zrušení přátelství/blokace
@@ -257,8 +273,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Id uživatele není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/friendship/getRequests':
     get:
       description: Endpoint pro získání žádostí o přátelství
@@ -275,7 +293,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserVO'
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
 # <- FriendshipController
 # -> AdminController
   '/admin/announcement':
@@ -289,8 +307,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Oznámení není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
   '/admin/setAdminRole':
     post:
       description: Endpoint pro vytváření oznámení
@@ -302,8 +322,10 @@ paths:
       responses:
         200:
           description: OK
+        400:
+          description: Id uživatele není validní.
         401:
-          description: Unauthorized
+          description: Neoprávněný přístup
 
 
 components:

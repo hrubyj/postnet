@@ -15,10 +15,7 @@ import {
 } from "antd";
 import {
     CheckOutlined, CloseOutlined,
-    HomeOutlined,
-    SettingOutlined, StopOutlined,
-    TeamOutlined, UserAddOutlined, UserDeleteOutlined, UsergroupAddOutlined,
-    UserOutlined
+    StopOutlined, UserAddOutlined, UserDeleteOutlined
 } from "@ant-design/icons";
 import {FriendshipApi, UserApi, UserVO} from "../../postnet-api/src";
 import "antd/dist/antd.css";
@@ -43,10 +40,12 @@ function Friends() {
         setFriends([]);
         setRequests([]);
         setBlocked([]);
-        loadUsers();
-        loadFriends();
-        loadRequests();
-        loadBlockedUsers();
+        if (!redirecting && authHeader) {
+            loadUsers();
+            loadFriends();
+            loadRequests();
+            loadBlockedUsers();
+        }
     }, []);
 
     const loadUsers = () => {
@@ -195,7 +194,7 @@ function Friends() {
 
     const {SubMenu} = Menu;
 
-    return  redirecting ? null : (
+    return redirecting ? null : (
         <Layout style={{minHeight: "100vh"}}>
             <Layout.Header className="header">
                 <NavBar/>

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.util.Collections;
 
 @Slf4j
@@ -31,8 +32,12 @@ public class AdminController implements AdminControllerApi {
             return new ResponseEntity(Collections.emptyList(), HttpStatus.UNAUTHORIZED);
         }
         String userEmail = authenticationService.getEmail();
-        postService.createNewAnnouncement(userEmail, postVO.getContent());
-        return ResponseEntity.ok(null);
+        try {
+            postService.createNewAnnouncement(userEmail, postVO.getContent());
+            return ResponseEntity.ok(null);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override
@@ -41,7 +46,11 @@ public class AdminController implements AdminControllerApi {
             return new ResponseEntity(Collections.emptyList(), HttpStatus.UNAUTHORIZED);
         }
         String userEmail = authenticationService.getEmail();
-        userService.setUserRole(userEmail, adminRoleVO);
-        return ResponseEntity.ok(null);
+        try {
+            userService.setUserRole(userEmail, adminRoleVO);
+            return ResponseEntity.ok(null);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }

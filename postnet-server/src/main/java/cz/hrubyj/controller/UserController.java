@@ -41,10 +41,10 @@ public class UserController implements UserControllerApi {
     public ResponseEntity<Void> registerUser(RegistrationVO registrationVO) {
         try {
             userService.registerNewUser(registrationVO);
+            return ResponseEntity.ok(null);
         } catch (ValidationException e) {
             return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.ok(null);
     }
 
     @Override

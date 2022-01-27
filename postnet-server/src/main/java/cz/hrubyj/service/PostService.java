@@ -109,7 +109,9 @@ public class PostService {
      */
     public List<PostVO> findOlderPostsByFriendsOrAdmin(String userEmail, LocalDateTime until) {
         //log.info("Searching for older posts, userEmail: {}", userEmail);
-        Assert.notNull(until, "Datum a čas nesmí být null");
+        if (until == null) {
+            throw new ValidationException("Datum nesmí být prázdné");
+        }
 
         List<User> userFriends = friendshipRepository.findUserFriends(userEmail);
         userFriends.add(userRepository.findUserByEmail(userEmail));

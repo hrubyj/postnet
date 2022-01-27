@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +31,12 @@ public class PostController implements PostControllerApi {
             return new ResponseEntity(Collections.emptyList(), HttpStatus.UNAUTHORIZED);
         }
         String userEmail = authenticationService.getEmail();
-        postService.createNewPost(userEmail, postVO.getContent());
-        return ResponseEntity.ok(null);
+        try {
+            postService.createNewPost(userEmail, postVO.getContent());
+            return ResponseEntity.ok(null);
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override
@@ -40,7 +45,11 @@ public class PostController implements PostControllerApi {
             return new ResponseEntity(Collections.emptyList(), HttpStatus.UNAUTHORIZED);
         }
         String userEmail = authenticationService.getEmail();
-        return ResponseEntity.ok(postService.findOlderPostsByFriendsOrAdmin(userEmail, until));
+        try {
+            return ResponseEntity.ok(postService.findOlderPostsByFriendsOrAdmin(userEmail, until));
+        } catch (ValidationException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @Override

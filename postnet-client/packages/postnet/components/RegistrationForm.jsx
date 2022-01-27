@@ -30,7 +30,7 @@ const RegistrationForm = () => {
                 router.push('/login');
             })
             .catch((e) => {
-                message.error('Registrace se nezdařila')
+                message.error('Registrace se nezdařila - email je již využíván')
             });
     };
 
@@ -45,7 +45,7 @@ const RegistrationForm = () => {
     }
 
     const onFinishFailed = (errorInfo) => {
-        message.error('Zadali jste nesprávné údaje')
+        message.error('Zadané údaje nejsou validní')
     };
 
     return (

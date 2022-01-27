@@ -39,7 +39,9 @@ function Admin() {
         }
 
         setStrangers([]);
-        loadUsers();
+        if (!redirecting && authHeader) {
+            loadUsers();
+        }
     }, []);
 
     const loadUsers = () => {
@@ -139,19 +141,19 @@ function Admin() {
                     <Row justify='center'>
                         <Typography.Title level={3}>Administrátoři</Typography.Title>
                     </Row>
-                    <Col  xs={{ span: 24, offset: 0}} lg={{ span: 10, offset: 7 }}>
-                    <Row justify='center'>
-                        <Input.Search placeholder="vyhledejte uživatele" allowClear
-                                      onSearch={onSearch}
-                                      onChange={(e) => {
-                                          onFulltextChange(e)
-                                      }}
-                                      style={{width: '50%', marginLeft: 20, marginBottom: '20px'}}
-                                      enterButton/>
-                    </Row>
+                    <Col xs={{span: 24, offset: 0}} lg={{span: 10, offset: 7}}>
+                        <Row justify='center'>
+                            <Input.Search placeholder="vyhledejte uživatele" allowClear
+                                          onSearch={onSearch}
+                                          onChange={(e) => {
+                                              onFulltextChange(e)
+                                          }}
+                                          style={{width: '50%', marginLeft: 20, marginBottom: '20px'}}
+                                          enterButton/>
+                        </Row>
                     </Col>
                     <Row justify='center'>
-                        <Col  xs={{ span: 24, offset: 9}} lg={{ span: 9, offset: 4 }}>
+                        <Col xs={{span: 24, offset: 9}} lg={{span: 9, offset: 4}}>
                             <List
                                 itemLayout="horizontal"
                                 loading={false}

@@ -272,8 +272,8 @@ function Posts() {
                             dataLength={posts.length}
                             next={() => loadOlderPosts()}
                             hasMore={posts.length < 50}
-                            loader={<Divider plain>Nic víc už tady není 🤐</Divider>}
-                            endMessage={<Divider plain>Nic víc už tady není 🤐</Divider>}
+                            loader={<Divider plain>Žadné další příspěvky 🤐</Divider>}
+                            endMessage={<Divider plain>Žadné další příspěvky 🤐</Divider>}
                             scrollableTarget="scrollableDiv"
                         >
                             <List>
